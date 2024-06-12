@@ -7,50 +7,51 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Guild {
-  guild_id String @id @db.VarChar(50)
-  prefix   String @db.VarChar(10)
-  config_channels ConfigChannels?
-  moderation_cases Moderation[]
-  user_notes UserNotes[]
+model guild {
+  guild_id         String          @id @db.VarChar(50)
+  prefix           String          @db.VarChar(10)
+  lang             String          @db.VarChar(10)
+  config_channels  configChannels?
+  moderation_cases moderation[]
+  user_notes       userNotes[]
 }
 
-model ConfigChannels {
-  guild_id             String   @db.VarChar(50) @unique
-  notes_logs           String?  @db.VarChar(50)
-  mod_log              String?  @db.VarChar(50)
-  text_xp_notification String?  @db.VarChar(50)
-  vc_xp_notification   String?  @db.VarChar(50)
-  voice_logs           String?  @db.VarChar(50)
-  guild                Guild    @relation(fields: [guild_id], references: [guild_id], onDelete: Cascade)
+model configChannels {
+  guild_id             String  @unique @db.VarChar(50)
+  notes_logs           String? @db.VarChar(50)
+  mod_log              String? @db.VarChar(50)
+  text_xp_notification String? @db.VarChar(50)
+  vc_xp_notification   String? @db.VarChar(50)
+  voice_logs           String? @db.VarChar(50)
+  guild                guild   @relation(fields: [guild_id], references: [guild_id], onDelete: Cascade)
 
   @@index([guild_id])
 }
 
-model UserNotes {
-  user_id       String
-  guild_id      String
-  note          String    @db.MediumText
-  note_id       Int
-  perpetrator   String
-  read_role_id  String?   @db.VarChar(50)
-  attachment_url String?  @db.MediumText
-  unix          String
-  guild         Guild     @relation(fields: [guild_id], references: [guild_id], onDelete: Cascade)
+model userNotes {
+  user_id        String
+  guild_id       String
+  note           String  @db.MediumText
+  note_id        Int
+  perpetrator    String
+  read_role_id   String? @db.VarChar(50)
+  attachment_url String? @db.MediumText
+  unix           String
+  guild          guild   @relation(fields: [guild_id], references: [guild_id], onDelete: Cascade)
 
   @@id([note_id, guild_id])
   @@index([guild_id])
 }
 
-model Moderation {
-  guild_id      String    @db.VarChar(50)
-  user_id       String    @db.VarChar(50)
-  moderator_id  String    @db.VarChar(50)
-  case_id       Int
-  type          String    @db.VarChar(50)
-  reason        String    @db.MediumText
-  date          DateTime
-  guild         Guild     @relation(fields: [guild_id], references: [guild_id], onDelete: Cascade)
+model moderation {
+  guild_id     String   @db.VarChar(50)
+  user_id      String   @db.VarChar(50)
+  moderator_id String   @db.VarChar(50)
+  case_id      Int
+  type         String   @db.VarChar(50)
+  reason       String   @db.MediumText
+  date         DateTime
+  guild        guild    @relation(fields: [guild_id], references: [guild_id], onDelete: Cascade)
 
   @@id([guild_id, case_id])
   @@index([guild_id])
