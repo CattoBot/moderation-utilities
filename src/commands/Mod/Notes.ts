@@ -3,6 +3,8 @@ import { ChatInputCommand, Command } from '@sapphire/framework';
 import { ApplyOptions } from '@sapphire/decorators';
 import { NotesCommandsOptions } from '../../shared/commands/NotesCommands';
 import { registerApplicationNotesCommand } from '../../lib/notes-override';
+import { AddNoteCommand } from '../../lib/commands/add-note';
+import { ListNoteCommand } from '../../lib/commands/list-note';
 
 @ApplyOptions<SubcommandOptions>(NotesCommandsOptions)
 export class NotesCommand extends Subcommand {
@@ -16,10 +18,8 @@ export class NotesCommand extends Subcommand {
         registerApplicationNotesCommand(registry);
     }
 
-
-
-    public async chatInputAddNote() {
-        // Lógica para añadir una nota
+    public async ChatInputAddNote(interaction: Subcommand.ChatInputCommandInteraction) {
+        await AddNoteCommand.run(interaction)
     }
 
     public async chatInputRemoveNote() {
@@ -30,7 +30,7 @@ export class NotesCommand extends Subcommand {
         // Lógica para encontrar una nota específica
     }
 
-    public async chatInputListNotes() {
-        // Lógica para listar todas las notas de un usuario
+    public async chatInputList(interaction: Subcommand.ChatInputCommandInteraction) {
+        await ListNoteCommand.run(interaction)
     }
 }

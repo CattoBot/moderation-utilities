@@ -5,7 +5,7 @@ import { getRootData } from "@sapphire/pieces";
 import { join } from "path";
 import { InternationalizationContext } from "@sapphire/plugin-i18next";
 
-export class ApplicationClient extends SapphireClient {
+export class App extends SapphireClient {
     private rootData = getRootData();
     constructor() {
         super({

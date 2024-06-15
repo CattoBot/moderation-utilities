@@ -20,8 +20,6 @@ model configChannels {
   guild_id             String  @unique @db.VarChar(50)
   notes_logs           String? @db.VarChar(50)
   mod_log              String? @db.VarChar(50)
-  text_xp_notification String? @db.VarChar(50)
-  vc_xp_notification   String? @db.VarChar(50)
   voice_logs           String? @db.VarChar(50)
   guild                guild   @relation(fields: [guild_id], references: [guild_id], onDelete: Cascade)
 
@@ -37,7 +35,7 @@ model userNotes {
   read_role_id   String? @db.VarChar(50)
   attachment_url String? @db.MediumText
   unix           String
-  guild          guild   @relation(fields: [guild_id], references: [guild_id], onDelete: Cascade)
+  guild          guild?   @relation(fields: [guild_id], references: [guild_id], onDelete: Cascade)
 
   @@id([note_id, guild_id])
   @@index([guild_id])
@@ -51,7 +49,7 @@ model moderation {
   type         String   @db.VarChar(50)
   reason       String   @db.MediumText
   date         DateTime
-  guild        guild    @relation(fields: [guild_id], references: [guild_id], onDelete: Cascade)
+  guild        guild?    @relation(fields: [guild_id], references: [guild_id], onDelete: Cascade)
 
   @@id([guild_id, case_id])
   @@index([guild_id])
